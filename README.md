@@ -1,4 +1,6 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/19808920/40754647-531702de-6448-11e8-84c1-9f950d71d4cd.png"></p>
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/19808920/58770949-bd9c7900-857f-11e9-8558-5dfaffddffda.png" height="200">
+</p>
 
 
 # Homebridge
@@ -23,9 +25,13 @@ If you're having an issue with a particular plugin, open an issue in that plugin
 
 There is  a [Homebridge community on Reddit](https://www.reddit.com/r/homebridge/).
 
-You can also chat with us in [Slack](https://slackin-znyruquwmv.now.sh).
+r/Homekit and r/Homebridge have also created a community Discord server, where users of both Homekit and Homebridge can discuss their different products as well as get support. The link for the community is [here](https://discord.gg/RcV7fa8).
 
-[![Slack Status](https://slackin-znyruquwmv.now.sh/badge.svg)](https://slackin-znyruquwmv.now.sh)
+[![Discord Status](https://img.shields.io/discord/512378789297258528.svg?style=flat)](https://discord.gg/RcV7fa8)
+
+You can also chat with us in [Slack](https://homebridge-slackin.glitch.me).
+
+[![Slack Status](https://homebridge-slackin.glitch.me/badge.svg)](https://homebridge-slackin.glitch.me)
 
 ## Installation
 
@@ -113,17 +119,23 @@ One final thing to remember is that Siri will almost always prefer its default p
 
 For a great introduction to writing plugins with some example code, check out [Frédéric Barthelet's excellent blog post](http://www.theodo.fr/blog/2017/08/make-siri-perfect-home-companion-devices-not-supported-apple-homekit/).
 
-There are also many existing plugins you can study.
+There are two basic types of plugins:
+* Single accessories: controls, for example, a single light bulb.
+* Platform accessories: a "meta" accessory that controls many sub-accessories. For example, a bridge that translates to many other devices on a specialized channel.
 
-You might start with the included [Example Plugins](https://github.com/nfarina/homebridge/tree/master/example-plugins). Right now this contains a single plugin that registers a platform that offers fake light accessories. This will show you how to use the Homebridge Plugin API.
+There are many existing plugins you can study; you might start with the included [Example Plugins](https://github.com/nfarina/homebridge/tree/master/example-plugins). Right now this contains a single plugin that registers a platform that offers fake light accessories. This is a good example of how to use the Homebridge Plugin API. You can also find an example plugin that [publishes an individual accessory](https://github.com/nfarina/homebridge/tree/6500912f54a70ff479e63e2b72760ab589fa558a/example-plugins/homebridge-lockitron).
 
 For more example on how to construct HomeKit Services and Characteristics, see the many Accessories in the [Legacy Plugins](https://github.com/nfarina/homebridge-legacy-plugins/tree/master/accessories) repository.
 
 You can also view the [full list of supported HomeKit Services and Characteristics in the HAP-NodeJS protocol repository](https://github.com/KhaosT/HAP-NodeJS/blob/master/lib/gen/HomeKitTypes.js).
 
-And you can find an example plugin that publishes an individual accessory at [here](https://github.com/nfarina/homebridge/tree/6500912f54a70ff479e63e2b72760ab589fa558a/example-plugins/homebridge-lockitron).
-
 See more examples on how to create Platform classes in the [Legacy Plugins](https://github.com/nfarina/homebridge-legacy-plugins/tree/master/platforms) repository.
+
+## Writing Plugins (ES6/TypeScript)
+
+Your plugin may need to perform a lot of asynchronous communication with 3rd-party services. To avoid "callback hell", you might try using next-generation JavaScript features like **async/await**.
+
+Check out the [`homebridge-tesla`](https://github.com/nfarina/homebridge-tesla) plugin for an example of how to write code in [TypeScript](https://github.com/nfarina/homebridge-tesla) or [ES6+Flow](https://github.com/nfarina/homebridge-tesla/tree/c9ddde85f60790614e5dd1960897a56cb93fde13) and transpile with [Babel](https://babeljs.io) and [Rollup](http://rollupjs.org) for distribution.
 
 ## Plugin Development
 
@@ -150,6 +162,8 @@ Two reasons why Homebridge may not be discoverable:
   1. Homebridge server thinks it's been paired with, but iOS thinks otherwise. Fix: deleted `persist/` directory which is next to your `config.json`.
 
   2. iOS device has gotten your Homebridge `username` (looks like a MAC address) "stuck" somehow, where it's in the database but inactive. Fix: change your `username` in the "bridge" section of `config.json` to be some new value.
+  
+  3. iOS DNS cache has gone stale or gotten misconfigured. Fix: Turn airplane mode on and back off to flush the DNS cache. (This is a temporary fix, but can be repeated when the problem recurs. No permanent fix is as yet known/confirmed. If you're experiencing this as a recurrent issue, it likely affects other bonjour and .local DNS resolution services, for which cycling airplane mode will also temporarily resolve.)
 
 ### Errors on startup
 
